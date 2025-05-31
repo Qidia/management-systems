@@ -1,34 +1,22 @@
-import { data } from "../data";
-import { Button, List } from "antd";
+import { List } from "antd";
 import { Link } from "react-router-dom";
+import { getAllProjects } from "../apiClient";
 
 const Boards = () => {
-  const boardsMap = new Map();
-  data.forEach((item) => {
-    if (!boardsMap.has(item.boardId)) {
-      boardsMap.set(item.boardId, item.boardName);
-    }
-  });
-
-  const boards = Array.from(boardsMap.entries()).map(([id, name]) => ({
-    id,
-    name,
-  }));
+  const boards = getAllProjects();
 
   return (
-    <>
-      <List
-        itemLayout="horizontal"
-        size="large"
-        dataSource={boards}
-        renderItem={(board) => (
-          <List.Item key={board.id}>
-            <span>{board.name}</span>
-            <Link to={`/boards/${board.id}`}>Перейти к доске</Link>
-          </List.Item>
-        )}
-      />
-    </>
+    <List
+      itemLayout="horizontal"
+      size="large"
+      dataSource={boards}
+      renderItem={(board) => (
+        <List.Item key={board.id}>
+          <span>{board.name}</span>
+          <Link to={`/boards/${board.id}`}>Перейти к доске</Link>
+        </List.Item>
+      )}
+    />
   );
 };
 
