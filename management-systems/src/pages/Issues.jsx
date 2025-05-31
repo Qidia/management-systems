@@ -1,9 +1,23 @@
-//  страница всех задач всех проектов
-
-import React from 'react';
+import { data } from "../data";
+import { Button, List } from "antd";
 
 const Issues = () => {
-    return <h1>Issues</h1>
-}
+  return (
+    <>
+      <List
+        itemLayout="horizontal"
+        size="large"
+        dataSource={data}
+        renderItem={(item) => (
+          <List.Item>
+            <Button>{item.title}</Button>
+          </List.Item>
+        )}
+      />
 
-export default Issues; 
+      <Button type="primary">Создать задачу</Button>
+    </>
+  );
+};
+
+export default Issues;
