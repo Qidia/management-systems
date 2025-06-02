@@ -14,10 +14,14 @@ const TaskFilter = ({ onFilter }) => {
   const [statuses, setStatuses] = useState([]);
   const [projects, setProjects] = useState([]);
 
-  // При монтировании компонента загружаем доступные статусы и проекты
   useEffect(() => {
-    setStatuses(getAllStatuses());
-    setProjects(getAllProjects());
+    const fetchFilters = async () => {
+      const statusesData = await getAllStatuses();
+      const projectsData = await getAllProjects();
+      setStatuses(statusesData);
+      setProjects(projectsData);
+    };
+    fetchFilters();
   }, []);
 
   // При изменении фильтров вызываем колбек для передачи выбранных значений

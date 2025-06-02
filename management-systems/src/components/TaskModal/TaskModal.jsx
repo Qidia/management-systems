@@ -32,11 +32,17 @@ const TaskModal = ({
   const [priorities, setPriorities] = useState([]);
   const [statuses, setStatuses] = useState([]);
 
-  // Загружаем данные для селектов при монтировании
+  // Загружаем данные для селектов
   useEffect(() => {
-    setAssignees(getAllAssignees());
-    setPriorities(getAllPriorities());
-    setStatuses(getAllStatuses());
+    const fetchData = async () => {
+      const assigneesData = await getAllAssignees();
+      const prioritiesData = await getAllPriorities();
+      const statusesData = await getAllStatuses();
+      setAssignees(assigneesData);
+      setPriorities(prioritiesData);
+      setStatuses(statusesData);
+    };
+    fetchData();
   }, []);
 
   // При изменении задачи заполняем форму либо сбрасываем
@@ -64,12 +70,15 @@ const TaskModal = ({
     form.validateFields().then((values) => {
       // Находим объект исполнителя по email
       const assigneeObj = assignees.find((a) => a.email === values.assignee);
+
       // Создаем обновленный объект задачи, подставляя выбранного исполнителя
       const updatedTask = {
         ...task,
         ...values,
-        assignee: assigneeObj || null,
+        AssigneeID: assigneeObj ? assigneeObj.id : null,
       };
+      delete updatedTask.assignee;
+
       onSave(updatedTask); // Вызываем сохранение
       onClose(); // Закрываем модалку
     });

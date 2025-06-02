@@ -16,22 +16,27 @@ export const TaskProvider = ({ children }) => {
 
   // При монтировании компонента загружаем задачи и проекты
   useEffect(() => {
-    setTasks(getAllTasks()); // Получаем все задачи
-    setProjects(getAllProjects()); // Получаем все проекты
+    const fetchData = async () => {
+      const tasks = await getAllTasks();
+      const projects = await getAllProjects();
+      setTasks(tasks); // Получаем все задачи
+      setProjects(projects); // Получаем все проекты
+    };
+    fetchData();
   }, []);
 
   // Функция для добавления новой задачи
-  const handleAddTask = (task) => {
-    const created = addTask(task);
+  const handleAddTask = async (task) => {
+    const created = await addTask(task);
     setTasks((prev) => [...prev, created]);
     return created;
   };
 
   // Функция для обновления существующей задачи
-  const handleUpdateTask = (task) => {
-    const updated = updateTask(task);
-    setTasks((prev) => prev.map((t) => (t.id === updated.id ? updated : t)));
-    return updated;
+  const handleUpdateTask = async (task) => {
+    await updateTask(task.id, task);
+    const updatedTasks = await getAllTasks();
+    setTasks(updatedTasks);
   };
 
   return (

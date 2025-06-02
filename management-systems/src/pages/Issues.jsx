@@ -3,11 +3,9 @@ import { useState, useEffect } from "react";
 import TaskModal from "../components/TaskModal/TaskModal";
 import TaskSearch from "../components/TaskSearch/TaskSearch";
 import TaskFilter from "../components/TaskFilter/TaskFilter";
-//import { getAllTasks, getAllProjects } from "../apiClient";
 import { useTaskContext } from "../components/TaskContext";
 
 // Компонент Issues отображает страницу со списком всех задач. На любую задачу можно нажать, тем самым вызвав окно редактирования с предзаполненными полями
-
 const Issues = () => {
   const { tasks, projects, addTask, updateTask } = useTaskContext();
 
@@ -15,10 +13,6 @@ const Issues = () => {
   const [modalOpen, setModalOpen] = useState(false);
   // Выбранная задача для редактирования
   const [selectedTask, setSelectedTask] = useState(null);
-  // Список всех проектов (используется в модалке)
- // const [projects, setProjects] = useState([]);
-  // Список всех задач
- // const [tasks, setTasks] = useState([]);
   // Отфильтрованный список задач, отображаемый в списке
   const [filteredTasks, setFilteredTasks] = useState([]);
   // Поисковый запрос (строка, введённая пользователем)
@@ -26,16 +20,6 @@ const Issues = () => {
   // Параметры фильтрации (status и boardId)
   const [filterParams, setFilterParams] = useState({});
 
-
-  
-  // Загружаем задачи и проекты при монтировании компонента
-/*   useEffect(() => {
-    const loadedTasks = getAllTasks();
-    setTasks(loadedTasks);
-    setFilteredTasks(loadedTasks); // Изначально показываем все задачи
-    setProjects(getAllProjects());
-  }, []);
- */
   // Обновляем отфильтрованные задачи при изменении параметров поиска/фильтра/самих задач
   useEffect(() => {
     const { status, boardId } = filterParams;
@@ -65,12 +49,14 @@ const Issues = () => {
     setFilteredTasks(result);
   }, [searchParams, filterParams, tasks]);
 
-  const handleSave = (task) => {
+  const handleSave = async (task) => {
     if (task.id) {
-      updateTask(task);
+      await updateTask(task);
     } else {
-      addTask(task);
+      await addTask(task);
     }
+    setModalOpen(false);
+    setSelectedTask(null);
   };
 
   return (
@@ -117,7 +103,7 @@ const Issues = () => {
         onSave={handleSave}
         task={selectedTask} // Передаём задачу (null — новая задача)
         projects={projects} // Список проектов для выбора
-        readOnlyProject={selectedTask === null ? false : true} // Проект нельзя редактировать
+        readOnlyProject={selectedTask !== null} // Проект нельзя редактировать
       />
     </>
   );

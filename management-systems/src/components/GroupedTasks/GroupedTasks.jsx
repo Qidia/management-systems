@@ -1,5 +1,5 @@
 import styles from "./GroupedTasks.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "antd";
 import TaskModal from "../TaskModal/TaskModal";
 import { getAllProjects } from "../../apiClient";
@@ -25,8 +25,8 @@ const GroupedTasks = ({ tasks }) => {
   const [modalOpen, setModalOpen] = useState(false);
   // Выбранная задача для редактирования
   const [selectedTask, setSelectedTask] = useState(null);
-  // Список проектов (загружается один раз при инициализации)
-  const [projects] = useState(getAllProjects());
+  // Список проектов
+  const [projects, setProjects] = useState([]);
 
   const { updateTask } = useTaskContext();
 
@@ -52,6 +52,14 @@ const GroupedTasks = ({ tasks }) => {
     setModalOpen(false);
     setSelectedTask(null);
   };
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      const data = await getAllProjects();
+      setProjects(data);
+    };
+    fetchProjects();
+  }, []);
 
   return (
     <>
