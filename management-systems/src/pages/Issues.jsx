@@ -108,7 +108,7 @@ const Issues = () => {
         onSave={handleSave}
         task={selectedTask} // Передаём задачу (null — новая задача)
         projects={projects} // Список проектов для выбора
-        readOnlyProject={true} // Проект нельзя редактировать
+        readOnlyProject={ selectedTask === null ? false : true} // Проект нельзя редактировать
       />
     </>
   );

@@ -78,7 +78,7 @@ const GroupedTasks = ({ tasks }) => {
         onSave={handleSave}
         task={selectedTask}
         projects={projects}
-        readOnlyProject={false}
+        readOnlyProject={true}
       />
     </>
   );

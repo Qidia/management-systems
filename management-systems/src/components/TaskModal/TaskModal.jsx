@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Modal, Input, Select, Form, Button } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   getAllProjects,
   getAllAssignees,
@@ -20,8 +20,12 @@ const TaskModal = ({
   readOnlyProject = false, // Флаг, блокирующий выбор проекта
 }) => {
   const [form] = Form.useForm(); // Экземпляр формы Ant Design
+  const boardId = Form.useWatch("boardId", form);
   const navigate = useNavigate();
+  const location = useLocation(); // получаем текущий маршрут
   const isEditMode = !!task; // Проверяем, режим редактирования или создания
+
+  const isOnIssuesPage = location.pathname === "/issues"; // проверка на страницу Issues
 
   // Локальные состояния для списков выбора
   const [projects, setProjects] = useState([]);
@@ -147,13 +151,8 @@ const TaskModal = ({
         {/* Кнопки внизу: переход на доску и сохранение */}
         <div className={styles.button}>
           {/* Кнопка перехода на доску, если выбран проект */}
-          {form.getFieldValue("boardId") && (
-            <Button
-              type="link"
-              onClick={() =>
-                navigate(`/boards/${form.getFieldValue("boardId")}`)
-              }
-            >
+          {isEditMode && isOnIssuesPage && boardId && (
+            <Button type="link" onClick={() => navigate(`/boards/${boardId}`)}>
               Перейти на доску
             </Button>
           )}
