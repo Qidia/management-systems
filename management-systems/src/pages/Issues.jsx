@@ -26,14 +26,17 @@ const Issues = () => {
     const lowerQuery = searchParams.toLowerCase();
 
     const result = tasks.filter((task) => {
+      const title = task.title || "";
+      const fullName = task.assignee?.fullName || "";
+
       // Проверяем, начинается ли какое-либо слово в названии задачи с поискового запроса
-      const matchTitle = task.title
+      const matchTitle = title
         .toLowerCase()
         .split(" ")
         .some((word) => word.startsWith(lowerQuery));
 
       // Проверяем, начинается ли какое-либо слово в имени исполнителя с поискового запроса
-      const matchAssignee = task.assignee?.fullName
+      const matchAssignee = fullName
         .toLowerCase()
         .split(" ")
         .some((word) => word.startsWith(lowerQuery));

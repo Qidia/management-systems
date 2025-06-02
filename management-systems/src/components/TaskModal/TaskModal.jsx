@@ -53,10 +53,12 @@ const TaskModal = ({
         assignee: task.assignee?.email || null,
         boardId: task.boardId, // на всякий случай ID проекта
       });
-    } else {
-      form.resetFields();
+    } else if (statuses.length > 0) {
+      form.setFieldsValue({
+        status: statuses[0], // первый статус из списка, обычно Backlog
+      });
     }
-  }, [task, form]);
+  }, [task, form, statuses]);
 
   // Сброс формы при закрытии модалки
   useEffect(() => {

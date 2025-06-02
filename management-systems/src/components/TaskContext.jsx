@@ -27,9 +27,9 @@ export const TaskProvider = ({ children }) => {
 
   // Функция для добавления новой задачи
   const handleAddTask = async (task) => {
-    const created = await addTask(task);
-    setTasks((prev) => [...prev, created]);
-    return created;
+     await addTask(task);
+    const updatedTasks = await getAllTasks();
+    setTasks(updatedTasks);
   };
 
   // Функция для обновления существующей задачи
