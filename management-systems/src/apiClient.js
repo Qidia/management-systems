@@ -47,3 +47,21 @@ export const getAllStatuses = () => {
 export const getAllPriorities = () => {
   return [...new Set(data.map((task) => task.priority))];
 };
+
+// Добавить новую задачу
+export const addTask = (newTask) => {
+  const newId = Math.max(...data.map((t) => t.id), 0) + 1; // найти уникальный ID
+  const taskWithId = { ...newTask, id: newId };
+  data.push(taskWithId);
+  return taskWithId;
+};
+
+// Обновить существующую задачу
+export const updateTask = (updatedTask) => {
+  const index = data.findIndex((task) => task.id === updatedTask.id);
+  if (index !== -1) {
+    data[index] = { ...data[index], ...updatedTask };
+    return data[index];
+  }
+  return null;
+};

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Modal, Input, Select, Form, Button } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
-  getAllProjects,
   getAllAssignees,
   getAllPriorities,
   getAllStatuses,
@@ -18,6 +17,7 @@ const TaskModal = ({
   onSave, // Функция сохранения задачи
   task, // Задача для редактирования (null для создания новой)
   readOnlyProject = false, // Флаг, блокирующий выбор проекта
+  projects,
 }) => {
   const [form] = Form.useForm(); // Экземпляр формы Ant Design
   const boardId = Form.useWatch("boardId", form);
@@ -28,14 +28,12 @@ const TaskModal = ({
   const isOnIssuesPage = location.pathname === "/issues"; // проверка на страницу Issues
 
   // Локальные состояния для списков выбора
-  const [projects, setProjects] = useState([]);
   const [assignees, setAssignees] = useState([]);
   const [priorities, setPriorities] = useState([]);
   const [statuses, setStatuses] = useState([]);
 
   // Загружаем данные для селектов при монтировании
   useEffect(() => {
-    setProjects(getAllProjects());
     setAssignees(getAllAssignees());
     setPriorities(getAllPriorities());
     setStatuses(getAllStatuses());
@@ -53,6 +51,13 @@ const TaskModal = ({
       form.resetFields();
     }
   }, [task, form]);
+
+  // Сброс формы при закрытии модалки
+  useEffect(() => {
+    if (!open) {
+      form.resetFields();
+    }
+  }, [open, form]);
 
   // Обработчик сабмита формы
   const handleSubmit = () => {

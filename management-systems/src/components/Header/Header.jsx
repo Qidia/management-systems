@@ -1,23 +1,18 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "antd";
 import TaskModal from "../TaskModal/TaskModal";
-import { getAllProjects } from "../../apiClient";
+import { useTaskContext } from "../TaskContext";
 
 // Компонент верхнего меню с навигацией и кнопкой создания задачи
 const Header = () => {
+  const { addTask, projects } = useTaskContext();
   // Состояние открытия модального окна создания задачи
   const [modalOpen, setModalOpen] = useState(false);
-  // Список проектов для выбора при создании задачи
-  const [projects, setProjects] = useState([]);
 
-  // Загрузка списка проектов при монтировании компонента
-  useEffect(() => {
-    setProjects(getAllProjects());
-  }, []);
-
-  const handleSave = (newTask) => {
-    console.log("Сохранена задача:", newTask);
+  const handleSave = (task) => {
+    addTask(task);
+    setModalOpen(false);
   };
 
   return (

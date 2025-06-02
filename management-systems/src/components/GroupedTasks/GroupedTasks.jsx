@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "antd";
 import TaskModal from "../TaskModal/TaskModal";
 import { getAllProjects } from "../../apiClient";
+import { useTaskContext } from "../TaskContext";
 
 // Соответствие статусов из данных ключам для группировки
 const STATUS = {
@@ -27,6 +28,8 @@ const GroupedTasks = ({ tasks }) => {
   // Список проектов (загружается один раз при инициализации)
   const [projects] = useState(getAllProjects());
 
+  const { updateTask } = useTaskContext();
+
   // Группируем задачи по статусу в объект с тремя массивами
   const groupedTasks = tasks.reduce(
     (acc, task) => {
@@ -44,7 +47,10 @@ const GroupedTasks = ({ tasks }) => {
   );
 
   const handleSave = (updatedTask) => {
-    console.log("Сохранена задача:", updatedTask);
+    if (!updatedTask.id) return; // игнорируем новые задачи, это не наша зона ответственности
+    updateTask(updatedTask);
+    setModalOpen(false);
+    setSelectedTask(null);
   };
 
   return (
@@ -72,14 +78,19 @@ const GroupedTasks = ({ tasks }) => {
       </div>
 
       {/* Модальное окно для создания/редактирования задачи */}
-      <TaskModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        onSave={handleSave}
-        task={selectedTask}
-        projects={projects}
-        readOnlyProject={true}
-      />
+      {selectedTask && (
+        <TaskModal
+          open={modalOpen}
+          onClose={() => {
+            setModalOpen(false);
+            setSelectedTask(null);
+          }}
+          onSave={handleSave}
+          task={selectedTask}
+          projects={projects}
+          readOnlyProject={true}
+        />
+      )}
     </>
   );
 };
