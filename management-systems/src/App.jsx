@@ -11,10 +11,16 @@ function App() {
     <>
       <Router>
         <Header />
+
+        {/* Определение маршрутов */}
         <Routes>
+          {/* Страница со списком проектов */}
           <Route path="/boards" element={<Boards />} />
+          {/* Страница отдельной доски с параметром id */}
           <Route path="/boards/:id" element={<Board />} />
+          {/* Страница со всеми задачами */}
           <Route path="/issues" element={<Issues />} />
+          {/* Роут для всех неизвестных путей (страница 404) */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>

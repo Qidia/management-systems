@@ -4,23 +4,30 @@ import { Button } from "antd";
 import TaskModal from "../TaskModal/TaskModal";
 import { getAllProjects } from "../../apiClient";
 
+// Соответствие статусов из данных ключам для группировки
 const STATUS = {
   Backlog: "todo",
   InProgress: "inProgress",
   Done: "done",
 };
 
+// Заголовки колонок для отображения
 const COLUMN_TITLES = {
   todo: "To do",
   inProgress: "In progress",
   done: "Done",
 };
 
+// Компонент для отображения задач, сгруппированных по статусу в колонки
 const GroupedTasks = ({ tasks }) => {
+  // Состояние открытия модального окна задачи
   const [modalOpen, setModalOpen] = useState(false);
+  // Выбранная задача для редактирования
   const [selectedTask, setSelectedTask] = useState(null);
+  // Список проектов (загружается один раз при инициализации)
   const [projects] = useState(getAllProjects());
 
+  // Группируем задачи по статусу в объект с тремя массивами
   const groupedTasks = tasks.reduce(
     (acc, task) => {
       const statusKey = STATUS[task.status];
@@ -42,6 +49,7 @@ const GroupedTasks = ({ tasks }) => {
 
   return (
     <>
+      {/* Колонки с задачами по статусам */}
       <div className={styles.columns}>
         {Object.keys(groupedTasks).map((statusKey) => (
           <div key={statusKey} className={styles.column}>
@@ -53,7 +61,7 @@ const GroupedTasks = ({ tasks }) => {
                 block
                 onClick={() => {
                   setSelectedTask(task);
-                  setModalOpen(true);
+                  setModalOpen(true); // открыть модалку для редактирования задачи
                 }}
               >
                 {task.title}
@@ -63,6 +71,7 @@ const GroupedTasks = ({ tasks }) => {
         ))}
       </div>
 
+      {/* Модальное окно для создания/редактирования задачи */}
       <TaskModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}

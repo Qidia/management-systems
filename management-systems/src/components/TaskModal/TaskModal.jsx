@@ -13,21 +13,23 @@ const { TextArea } = Input;
 const { Option } = Select;
 
 const TaskModal = ({
-  open,
-  onClose,
-  onSave,
-  task,
-  readOnlyProject = false,
+  open, // Флаг открытия модального окна
+  onClose, // Функция закрытия модального окна
+  onSave, // Функция сохранения задачи
+  task, // Задача для редактирования (null для создания новой)
+  readOnlyProject = false, // Флаг, блокирующий выбор проекта
 }) => {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm(); // Экземпляр формы Ant Design
   const navigate = useNavigate();
-  const isEditMode = !!task;
+  const isEditMode = !!task; // Проверяем, режим редактирования или создания
 
+  // Локальные состояния для списков выбора
   const [projects, setProjects] = useState([]);
   const [assignees, setAssignees] = useState([]);
   const [priorities, setPriorities] = useState([]);
   const [statuses, setStatuses] = useState([]);
 
+  // Загружаем данные для селектов при монтировании
   useEffect(() => {
     setProjects(getAllProjects());
     setAssignees(getAllAssignees());
@@ -35,28 +37,32 @@ const TaskModal = ({
     setStatuses(getAllStatuses());
   }, []);
 
+  // При изменении задачи заполняем форму либо сбрасываем
   useEffect(() => {
     if (task) {
       form.setFieldsValue({
         ...task,
         assignee: task.assignee?.email || null,
-        boardId: task.boardId, // на всякий случай
+        boardId: task.boardId, // на всякий случай ID проекта
       });
     } else {
       form.resetFields();
     }
   }, [task, form]);
 
+  // Обработчик сабмита формы
   const handleSubmit = () => {
     form.validateFields().then((values) => {
+      // Находим объект исполнителя по email
       const assigneeObj = assignees.find((a) => a.email === values.assignee);
+      // Создаем обновленный объект задачи, подставляя выбранного исполнителя
       const updatedTask = {
         ...task,
         ...values,
         assignee: assigneeObj || null,
       };
-      onSave(updatedTask);
-      onClose();
+      onSave(updatedTask); // Вызываем сохранение
+      onClose(); // Закрываем модалку
     });
   };
 
@@ -68,6 +74,7 @@ const TaskModal = ({
       footer={null}
     >
       <Form form={form} layout="vertical">
+        {/* Название задачи */}
         <Form.Item
           name="title"
           label="Название задачи"
@@ -76,10 +83,12 @@ const TaskModal = ({
           <Input />
         </Form.Item>
 
+        {/* Описание задачи */}
         <Form.Item name="description" label="Описание задачи">
           <TextArea rows={3} />
         </Form.Item>
 
+        {/* Выбор проекта */}
         <Form.Item
           name="boardId"
           label="Проект"
@@ -94,6 +103,7 @@ const TaskModal = ({
           </Select>
         </Form.Item>
 
+        {/* Приоритет задачи */}
         <Form.Item
           name="priority"
           label="Приоритет"
@@ -108,6 +118,7 @@ const TaskModal = ({
           </Select>
         </Form.Item>
 
+        {/* Статус задачи */}
         <Form.Item
           name="status"
           label="Статус"
@@ -122,6 +133,7 @@ const TaskModal = ({
           </Select>
         </Form.Item>
 
+        {/* Исполнитель */}
         <Form.Item name="assignee" label="Исполнитель">
           <Select placeholder="Выберите исполнителя" allowClear>
             {assignees.map((user) => (
@@ -132,7 +144,9 @@ const TaskModal = ({
           </Select>
         </Form.Item>
 
+        {/* Кнопки внизу: переход на доску и сохранение */}
         <div className={styles.button}>
+          {/* Кнопка перехода на доску, если выбран проект */}
           {form.getFieldValue("boardId") && (
             <Button
               type="link"
@@ -143,6 +157,7 @@ const TaskModal = ({
               Перейти на доску
             </Button>
           )}
+          {/* Кнопка сохранения */}
           <Button type="primary" onClick={handleSubmit}>
             {isEditMode ? "Обновить" : "Создать"}
           </Button>

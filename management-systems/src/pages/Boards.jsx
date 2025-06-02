@@ -2,6 +2,7 @@ import { List } from "antd";
 import { Link } from "react-router-dom";
 import { getAllProjects } from "../apiClient";
 
+// Компонент Boards отображает страницу со списком всех проектов(досок). Из страницы можно перейти на страницу выбранного проекта
 const Boards = () => {
   const boards = getAllProjects();
 

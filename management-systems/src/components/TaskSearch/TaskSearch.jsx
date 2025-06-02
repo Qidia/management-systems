@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 const TaskSearch = ({ onSearch }) => {
   const [searchParams, setQuery] = useState("");
 
+  // Каждый раз при изменении строки поиска вызываем родительскую функцию onSearch
   useEffect(() => {
     onSearch(searchParams);
   }, [searchParams]);
