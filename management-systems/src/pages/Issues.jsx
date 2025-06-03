@@ -5,6 +5,8 @@ import TaskSearch from "../components/TaskSearch/TaskSearch";
 import TaskFilter from "../components/TaskFilter/TaskFilter";
 import { useTaskContext } from "../components/TaskContext";
 
+const PAGE_SIZE = 7;
+
 // Компонент Issues отображает страницу со списком всех задач. На любую задачу можно нажать, тем самым вызвав окно редактирования с предзаполненными полями
 const Issues = () => {
   const { tasks, projects, addTask, updateTask } = useTaskContext();
@@ -19,6 +21,8 @@ const Issues = () => {
   const [searchParams, setSearchParams] = useState("");
   // Параметры фильтрации (status и boardId)
   const [filterParams, setFilterParams] = useState({});
+
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Обновляем отфильтрованные задачи при изменении параметров поиска/фильтра/самих задач
   useEffect(() => {
@@ -50,6 +54,7 @@ const Issues = () => {
 
     // Обновляем список отфильтрованных задач
     setFilteredTasks(result);
+    setCurrentPage(1);
   }, [searchParams, filterParams, tasks]);
 
   const handleSave = async (task) => {
@@ -62,6 +67,11 @@ const Issues = () => {
     setSelectedTask(null);
   };
 
+  const paginatedTasks = filteredTasks.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE
+  );
+
   return (
     <>
       {/* Компонент поиска задач */}
@@ -73,7 +83,14 @@ const Issues = () => {
       <List
         itemLayout="horizontal"
         size="large"
-        dataSource={filteredTasks}
+        pagination={{
+          current: currentPage,
+          pageSize: PAGE_SIZE,
+          total: filteredTasks.length,
+          onChange: (page) => setCurrentPage(page),
+          showSizeChanger: false,
+        }}
+        dataSource={paginatedTasks}
         renderItem={(item) => (
           <List.Item key={item.id}>
             <Button
