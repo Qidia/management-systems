@@ -1,0 +1,36 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background-color: #fcfcfc;
+  border-bottom: 1px solid #ddd;
+}
+
+.nav {
+  display: flex;
+  gap: var(--spacing-lg);
+}
+
+.link {
+  text-decoration: none;
+  color: var(--color-dark-gray);
+  font-weight: var(--font-weight-normal);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  transition: color 0.3s ease;
+}
+
+.link:hover,
+.link:focus-visible {
+  color: var(--color-red);
+  outline: none;
+}
+
+.active {
+  color: var(--color-red);
+  border-bottom: 2px solid var(--color-red);
+}
+
+.right {
+  margin-left: auto;
+}

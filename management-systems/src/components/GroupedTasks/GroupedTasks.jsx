@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Button } from "antd";
 import TaskModal from "../TaskModal/TaskModal";
 import { getAllProjects } from "../../apiClient";
-import { useTaskContext } from "../TaskContext";
+import { useTaskContext } from "../TaskContext/TaskContext";
 
 // Соответствие статусов из данных ключам для группировки
 const STATUS = {
@@ -68,19 +68,21 @@ const GroupedTasks = ({ tasks }) => {
         {Object.keys(groupedTasks).map((statusKey) => (
           <div key={statusKey} className={styles.column}>
             <h2>{COLUMN_TITLES[statusKey]}</h2>
-            {groupedTasks[statusKey].map((task) => (
-              <Button
-                key={task.id}
-                className={styles.taskCard}
-                block
-                onClick={() => {
-                  setSelectedTask(task);
-                  setModalOpen(true); // открыть модалку для редактирования задачи
-                }}
-              >
-                {task.title}
-              </Button>
-            ))}
+            <div className={styles.containerTasks}>
+              {groupedTasks[statusKey].map((task) => (
+                <Button
+                  key={task.id}
+                  className={styles.taskCard}
+                  block
+                  onClick={() => {
+                    setSelectedTask(task);
+                    setModalOpen(true); // открыть модалку для редактирования задачи
+                  }}
+                >
+                  {task.title}
+                </Button>
+              ))}
+            </div>
           </div>
         ))}
       </div>

@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
-import GroupedTasks from "../components/GroupedTasks/GroupedTasks";
-import { useTaskContext } from "../components/TaskContext";
+import GroupedTasks from "../../components/GroupedTasks/GroupedTasks";
+import { useTaskContext } from "../../components/TaskContext/TaskContext";
+import styles from "./Board.module.css";
 
 const Board = () => {
   // Получаем параметр id из URL
@@ -15,8 +16,8 @@ const Board = () => {
   const name = filteredTasks[0]?.boardName || "Неизвестный проект";
 
   return (
-    <div className="board">
-      <h1>{name}</h1>
+    <div className={styles.board}>
+      <h1 className={styles.title}>{name}</h1>
       {/* Отображаем задачи, сгруппированные по статусу */}
       <GroupedTasks tasks={filteredTasks} />
     </div>

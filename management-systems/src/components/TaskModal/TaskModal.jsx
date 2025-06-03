@@ -92,6 +92,7 @@ const TaskModal = ({
       onCancel={onClose}
       title={isEditMode ? "Редактирование задачи" : "Создание задачи"}
       footer={null}
+      centered
     >
       <Form form={form} layout="vertical">
         {/* Название задачи */}

@@ -1,11 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header/Header";
-import Boards from "./pages/boards";
-import Board from "./pages/Board";
-import Issues from "./pages/issues";
-import NotFound from "./pages/notFound";
-import "./App.css";
-import { TaskProvider } from "./components/TaskContext";
+import Boards from "./pages/Boards/Boards";
+import Board from "./pages/Board/Board";
+import Issues from "./pages/Issues/Issues";
+import NotFound from "./pages/NotFound/NotFound";
+import { TaskProvider } from "./components/TaskContext/TaskContext";
 
 function App() {
   return (

@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getAllTasks, getAllProjects, addTask, updateTask } from "../apiClient";
+import { getAllTasks, getAllProjects, addTask, updateTask } from "../../apiClient";
 
 // Создаём контекст задач
 const TaskContext = createContext();

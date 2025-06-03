@@ -1,9 +1,10 @@
 import { Button, List } from "antd";
 import { useState, useEffect } from "react";
-import TaskModal from "../components/TaskModal/TaskModal";
-import TaskSearch from "../components/TaskSearch/TaskSearch";
-import TaskFilter from "../components/TaskFilter/TaskFilter";
-import { useTaskContext } from "../components/TaskContext";
+import TaskModal from "../../components/TaskModal/TaskModal";
+import TaskSearch from "../../components/TaskSearch/TaskSearch";
+import TaskFilter from "../../components/TaskFilter/TaskFilter";
+import { useTaskContext } from "../../components/TaskContext/TaskContext";
+import styles from "./Issues.module.css";
 
 const PAGE_SIZE = 7;
 
@@ -74,57 +75,66 @@ const Issues = () => {
 
   return (
     <>
-      {/* Компонент поиска задач */}
-      <TaskSearch onSearch={setSearchParams} />
-      {/* Компонент фильтрации по статусу и проекту */}
-      <TaskFilter onFilter={setFilterParams} />
+      <div className={styles.issuesContainer}>
+        <div className={styles.filtersRow}>
+          {/* Компонент поиска задач */}
+          <TaskSearch onSearch={setSearchParams} />
+          {/* Компонент фильтрации по статусу и проекту */}
+          <TaskFilter onFilter={setFilterParams} />
+        </div>
 
-      {/* Список задач */}
-      <List
-        itemLayout="horizontal"
-        size="large"
-        pagination={{
-          current: currentPage,
-          pageSize: PAGE_SIZE,
-          total: filteredTasks.length,
-          onChange: (page) => setCurrentPage(page),
-          showSizeChanger: false,
-        }}
-        dataSource={paginatedTasks}
-        renderItem={(item) => (
-          <List.Item key={item.id}>
+        <div className={styles.taskListContainer}>
+          {/* Список задач */}
+          <List
+            itemLayout="horizontal"
+            size="large"
+            pagination={{
+              current: currentPage,
+              pageSize: PAGE_SIZE,
+              total: filteredTasks.length,
+              onChange: (page) => setCurrentPage(page),
+              showSizeChanger: false,
+            }}
+            dataSource={paginatedTasks}
+            renderItem={(item) => (
+              <List.Item key={item.id}>
+                <Button
+                  className={styles.taskItem}
+                  onClick={() => {
+                    setSelectedTask(item); // Устанавливаем задачу для редактирования
+                    setModalOpen(true); // Открываем модалку
+                  }}
+                >
+                  {item.title}
+                </Button>
+              </List.Item>
+            )}
+          />
+
+          <div className={styles.createButtonWrapper}>
+            {/* Кнопка создания новой задачи */}
             <Button
+              type="primary"
               onClick={() => {
-                setSelectedTask(item); // Устанавливаем задачу для редактирования
+                setSelectedTask(null); // Сброс выбранной задачи
                 setModalOpen(true); // Открываем модалку
               }}
             >
-              {item.title}
+              Создать задачу
             </Button>
-          </List.Item>
-        )}
-      />
+          </div>
+        </div>
 
-      {/* Кнопка создания новой задачи */}
-      <Button
-        type="primary"
-        onClick={() => {
-          setSelectedTask(null); // Сброс выбранной задачи
-          setModalOpen(true); // Открываем модалку
-        }}
-      >
-        Создать задачу
-      </Button>
-
-      {/* Модальное окно для создания или редактирования задачи */}
-      <TaskModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        onSave={handleSave}
-        task={selectedTask} // Передаём задачу (null — новая задача)
-        projects={projects} // Список проектов для выбора
-        readOnlyProject={selectedTask !== null} // Проект нельзя редактировать
-      />
+        {/* Модальное окно для создания или редактирования задачи */}
+        <TaskModal
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+          onSave={handleSave}
+          task={selectedTask} // Передаём задачу (null — новая задача)
+          projects={projects} // Список проектов для выбора
+          readOnlyProject={selectedTask !== null} // Проект нельзя редактировать
+        />
+      </div>
     </>
   );
 };

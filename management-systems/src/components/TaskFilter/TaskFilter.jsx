@@ -1,6 +1,7 @@
 import { Select, Space } from "antd";
 import { useEffect, useState } from "react";
 import { getAllProjects, getAllStatuses } from "../../apiClient";
+import styles from "./TaskFilter.module.css";
 
 const { Option } = Select;
 
@@ -37,7 +38,7 @@ const TaskFilter = ({ onFilter }) => {
         allowClear
         value={status || undefined}
         onChange={setStatus}
-        style={{ width: 300 }}
+        className={styles.selectInput}
       >
         {statuses.map((s) => (
           <Option key={s} value={s}>
@@ -52,7 +53,7 @@ const TaskFilter = ({ onFilter }) => {
         allowClear
         value={boardId || undefined}
         onChange={setBoardId}
-        style={{ width: 300 }}
+        className={styles.selectInput}
       >
         {projects.map((p) => (
           <Option key={p.id} value={p.id}>

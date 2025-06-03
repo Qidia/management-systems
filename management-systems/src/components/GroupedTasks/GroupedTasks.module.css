@@ -1,23 +1,38 @@
 .columns {
   display: flex;
-  gap: 20px;
 }
 
 .column {
   flex: 1;
-  background-color: #f4f4f4;
-  padding: 10px;
+  min-width: 280px;
+  background-color: #fafafa;
+  border: 2px solid var(--color-blue);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .column h2 {
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: var(--spacing-md);
+  font-size: 18px;
+  color: var(--color-blue);
+  border-bottom: 2px solid var(--color-blue);
+}
+
+.containerTasks {
+  padding: var(--spacing-md);
 }
 
 .taskCard {
-  background-color: white;
-  padding: 10px;
-  margin-bottom: 8px;
-  border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: var(--color-bg);
+  padding: 30px;
+  margin-bottom: var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--color-light-gray);
+
+}
+
+.taskCard:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  color: var(--color-black) !important;
 }

@@ -1,0 +1,28 @@
+.container {
+  max-width: 1400px;
+  padding: var(--spacing-lg);
+}
+
+.item {
+  border: 1px solid #b4b4b4 !important;
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+  background-color: #fdfdfd;
+  transition: box-shadow 0.3s ease;
+}
+
+.item:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.name {
+  font-size: 16px;
+}
+
+.link:hover {
+  color: var(--color-red);
+}

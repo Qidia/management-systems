@@ -1,5 +1,6 @@
 import { Input, Space } from "antd";
 import { useEffect, useState } from "react";
+import styles from "./TaskSearch.module.css";
 
 const TaskSearch = ({ onSearch }) => {
   const [searchParams, setQuery] = useState("");
@@ -15,7 +16,7 @@ const TaskSearch = ({ onSearch }) => {
         placeholder="Поиск по названию или исполнителю"
         value={searchParams}
         onChange={(e) => setQuery(e.target.value)}
-        style={{ width: 300 }}
+        className={styles.searchInput}
       />
     </Space>
   );
