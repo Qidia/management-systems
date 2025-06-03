@@ -5,10 +5,10 @@ import styles from "./TaskSearch.module.css";
 const TaskSearch = ({ onSearch }) => {
   const [searchParams, setQuery] = useState("");
 
-  // Каждый раз при изменении строки поиска вызываем родительскую функцию onSearch
+  // Вызываем onSearch при каждом изменении searchParams
   useEffect(() => {
     onSearch(searchParams);
-  }, [searchParams]);
+  }, [searchParams, onSearch]);
 
   return (
     <Space direction="vertical">

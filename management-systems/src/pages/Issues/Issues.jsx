@@ -1,31 +1,37 @@
 import { Button, List } from "antd";
 import { useState, useEffect } from "react";
+
 import TaskModal from "../../components/TaskModal/TaskModal";
 import TaskSearch from "../../components/TaskSearch/TaskSearch";
 import TaskFilter from "../../components/TaskFilter/TaskFilter";
+
+// Импорт контекста задач
 import { useTaskContext } from "../../components/TaskContext/TaskContext";
+
 import styles from "./Issues.module.css";
 
+// Количество задач на одну страницу
 const PAGE_SIZE = 7;
 
-// Компонент Issues отображает страницу со списком всех задач. На любую задачу можно нажать, тем самым вызвав окно редактирования с предзаполненными полями
+// Компонент Issues отображает страницу со всеми задачами
 const Issues = () => {
+  // Получаем задачи, проекты и методы управления задачами из контекста
   const { tasks, projects, addTask, updateTask } = useTaskContext();
 
   // Состояние управления модалкой
   const [modalOpen, setModalOpen] = useState(false);
   // Выбранная задача для редактирования
   const [selectedTask, setSelectedTask] = useState(null);
-  // Отфильтрованный список задач, отображаемый в списке
+  // Отфильтрованный список задач
   const [filteredTasks, setFilteredTasks] = useState([]);
   // Поисковый запрос (строка, введённая пользователем)
   const [searchParams, setSearchParams] = useState("");
   // Параметры фильтрации (status и boardId)
   const [filterParams, setFilterParams] = useState({});
-
+  // Текущая страница пагинации
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Обновляем отфильтрованные задачи при изменении параметров поиска/фильтра/самих задач
+  // Фильтрация задач при изменении задач, фильтров или строки поиска
   useEffect(() => {
     const { status, boardId } = filterParams;
     const lowerQuery = searchParams.toLowerCase();
@@ -50,14 +56,16 @@ const Issues = () => {
       const matchStatus = !status || task.status === status;
       // Проверяем соответствие проекта
       const matchBoard = !boardId || task.boardId === boardId;
+
       return (matchTitle || matchAssignee) && matchStatus && matchBoard;
     });
 
-    // Обновляем список отфильтрованных задач
+    // Обновляем список отфильтрованных задач и сбрасываем текущую страницу
     setFilteredTasks(result);
     setCurrentPage(1);
   }, [searchParams, filterParams, tasks]);
 
+  // Обработка сохранения задачи (обновление или создание)
   const handleSave = async (task) => {
     if (task.id) {
       await updateTask(task);
@@ -68,6 +76,7 @@ const Issues = () => {
     setSelectedTask(null);
   };
 
+  // Выборка задач для текущей страницы
   const paginatedTasks = filteredTasks.slice(
     (currentPage - 1) * PAGE_SIZE,
     currentPage * PAGE_SIZE

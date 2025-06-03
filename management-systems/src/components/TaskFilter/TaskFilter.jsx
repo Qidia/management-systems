@@ -15,6 +15,7 @@ const TaskFilter = ({ onFilter }) => {
   const [statuses, setStatuses] = useState([]);
   const [projects, setProjects] = useState([]);
 
+  // Загружаем статусы и проекты при монтировании компонента
   useEffect(() => {
     const fetchFilters = async () => {
       const statusesData = await getAllStatuses();
@@ -25,7 +26,7 @@ const TaskFilter = ({ onFilter }) => {
     fetchFilters();
   }, []);
 
-  // При изменении фильтров вызываем колбек для передачи выбранных значений
+  // При изменении фильтров вызываем переданный колбек onFilter с текущими значениями
   useEffect(() => {
     onFilter({ status, boardId });
   }, [status, boardId]);

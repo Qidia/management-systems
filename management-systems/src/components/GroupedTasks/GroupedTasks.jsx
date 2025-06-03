@@ -27,15 +27,15 @@ const GroupedTasks = ({ tasks }) => {
   const [selectedTask, setSelectedTask] = useState(null);
   // Список проектов
   const [projects, setProjects] = useState([]);
-
+  // Получаем функцию обновления задачи из контекста
   const { updateTask } = useTaskContext();
 
   // Группируем задачи по статусу в объект с тремя массивами
   const groupedTasks = tasks.reduce(
     (acc, task) => {
-      const statusKey = STATUS[task.status];
+      const statusKey = STATUS[task.status]; // Преобразуем статус в ключ
       if (statusKey) {
-        acc[statusKey].push(task);
+        acc[statusKey].push(task); // Добавляем задачу в соответствующую группу
       }
       return acc;
     },
@@ -46,13 +46,15 @@ const GroupedTasks = ({ tasks }) => {
     }
   );
 
+  // Обработчик сохранения изменений задачи
   const handleSave = (updatedTask) => {
-    if (!updatedTask.id) return; // игнорируем новые задачи, это не наша зона ответственности
-    updateTask(updatedTask);
+    if (!updatedTask.id) return; // игнорируем новые задачи
+    updateTask(updatedTask); // Обновляем задачу через контекст
     setModalOpen(false);
     setSelectedTask(null);
   };
 
+  // Загружаем список проектов при монтировании компонента
   useEffect(() => {
     const fetchProjects = async () => {
       const data = await getAllProjects();
@@ -67,8 +69,10 @@ const GroupedTasks = ({ tasks }) => {
       <div className={styles.columns}>
         {Object.keys(groupedTasks).map((statusKey) => (
           <div key={statusKey} className={styles.column}>
+            {/* Заголовок колонки */}
             <h2>{COLUMN_TITLES[statusKey]}</h2>
             <div className={styles.containerTasks}>
+              {/* Список задач в колонке */}
               {groupedTasks[statusKey].map((task) => (
                 <Button
                   key={task.id}
@@ -76,7 +80,7 @@ const GroupedTasks = ({ tasks }) => {
                   block
                   onClick={() => {
                     setSelectedTask(task);
-                    setModalOpen(true); // открыть модалку для редактирования задачи
+                    setModalOpen(true);
                   }}
                 >
                   {task.title}

@@ -7,10 +7,12 @@ import styles from "./Header.module.css";
 
 // Компонент верхнего меню с навигацией и кнопкой создания задачи
 const Header = () => {
+  // Достаем функции и данные из контекста
   const { addTask, projects } = useTaskContext();
   // Состояние открытия модального окна создания задачи
   const [modalOpen, setModalOpen] = useState(false);
 
+  // Функция обработки сохранения новой задачи
   const handleSave = (task) => {
     addTask(task);
     setModalOpen(false);
@@ -20,6 +22,7 @@ const Header = () => {
     <header className={styles.header}>
       {/* Навигация по приложению */}
       <nav className={styles.nav}>
+        {/* Ссылка на страницу всех задач */}
         <NavLink
           to="/issues"
           className={({ isActive }) =>
@@ -28,6 +31,8 @@ const Header = () => {
         >
           Все задачи
         </NavLink>
+
+        {/* Ссылка на страницу со списком проектов */}
         <NavLink
           to="/boards"
           className={({ isActive }) =>
@@ -47,7 +52,7 @@ const Header = () => {
         Создать задачу
       </Button>
 
-      {/* Модальное окно для создания или редактирования задачи */}
+      {/* Модальное окно для создания задачи */}
       <TaskModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}

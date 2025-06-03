@@ -8,16 +8,19 @@ const Board = () => {
   const { id } = useParams();
   const boardId = Number(id);
 
-  // Получаем задачи, привязанные к данной доске
+  // Извлекаем все задачи из контекста
   const { tasks } = useTaskContext();
 
-  // Название доски берем из первой задачи, если она есть, иначе — "Неизвестный проект"
+  // Фильтруем задачи, относящиеся к текущей доске
   const filteredTasks = tasks.filter((task) => task.boardId === boardId);
+  // Название доски берём из первой задачи, если она есть
   const name = filteredTasks[0]?.boardName || "Неизвестный проект";
 
   return (
     <div className={styles.board}>
+      {/* Заголовок с названием доски */}
       <h1 className={styles.title}>{name}</h1>
+
       {/* Отображаем задачи, сгруппированные по статусу */}
       <GroupedTasks tasks={filteredTasks} />
     </div>

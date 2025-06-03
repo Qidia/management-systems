@@ -20,11 +20,11 @@ const TaskModal = ({
   projects,
 }) => {
   const [form] = Form.useForm(); // Экземпляр формы Ant Design
-  const boardId = Form.useWatch("boardId", form);
+  const boardId = Form.useWatch("boardId", form); // Слежение за выбранным проектом
   const navigate = useNavigate();
   const location = useLocation(); // получаем текущий маршрут
-  const isEditMode = !!task; // Проверяем, режим редактирования или создания
 
+  const isEditMode = !!task; // Проверяем, режим редактирования или создания
   const isOnIssuesPage = location.pathname === "/issues"; // проверка на страницу Issues
 
   // Локальные состояния для списков выбора
@@ -50,12 +50,12 @@ const TaskModal = ({
     if (task) {
       form.setFieldsValue({
         ...task,
-        assignee: task.assignee?.email || null,
+        assignee: task.assignee?.email || null, // Исполнитель — по email
         boardId: task.boardId, // на всякий случай ID проекта
       });
     } else if (statuses.length > 0) {
       form.setFieldsValue({
-        status: statuses[0], // первый статус из списка, обычно Backlog
+        status: statuses[0], // первый статус из списка
       });
     }
   }, [task, form, statuses]);

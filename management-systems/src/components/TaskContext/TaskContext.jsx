@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { getAllTasks, getAllProjects, addTask, updateTask } from "../../apiClient";
 
-// Создаём контекст задач
+// Создаём контекст для задач и проектов
 const TaskContext = createContext();
 
 // Хук для удобного доступа к контексту задач
@@ -27,9 +27,9 @@ export const TaskProvider = ({ children }) => {
 
   // Функция для добавления новой задачи
   const handleAddTask = async (task) => {
-    await addTask(task);
-    const updatedTasks = await getAllTasks();
-    setTasks(updatedTasks);
+    await addTask(task); // Отправляем задачу на сервер
+    const updatedTasks = await getAllTasks(); // Повторно загружаем список задач
+    setTasks(updatedTasks);   // Обновляем состояние задач
   };
 
   // Функция для обновления существующей задачи
