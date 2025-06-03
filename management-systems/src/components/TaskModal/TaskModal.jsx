@@ -53,12 +53,8 @@ const TaskModal = ({
         assignee: task.assignee?.email || null, // Исполнитель — по email
         boardId: task.boardId, // на всякий случай ID проекта
       });
-    } else if (statuses.length > 0) {
-      form.setFieldsValue({
-        status: statuses[0], // первый статус из списка
-      });
     }
-  }, [task, form, statuses]);
+  }, [task, form]);
 
   // Сброс формы при закрытии модалки
   useEffect(() => {
